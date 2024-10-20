@@ -1,0 +1,122 @@
+{
+  "name": "filescope",
+  "displayName": "FileScope",
+  "description": "Enhance file management with custom scopes",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesjf7/filescope.git"
+  },
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "filescope.createScope",
+        "title": "File Scope: Create New Scope"
+      },
+      {
+        "command": "filescope.addToScope",
+        "title": "File Scope: Add to Scope"
+      },
+      {
+        "command": "filescope.removeFromScope",
+        "title": "File Scope: Remove from Scope"
+      },
+      {
+        "command": "filescope.deleteScope",
+        "title": "FileScope: Delete Scope"
+      },
+      {
+        "command": "filescope.deleteScopeFromTree",
+        "title": "Delete Scope",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "filescope.refreshTree",
+        "title": "File Scope: Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "fileScopeExplorer",
+          "name": "File Scopes"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "filescope.createScope",
+          "when": "view == fileScopeExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "filescope.refreshTree",
+          "when": "view == fileScopeExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "filescope.removeFromScope",
+          "when": "view == fileScopeExplorer && (viewItem == file || viewItem == folder)",
+          "group": "inline"
+        },
+        {
+          "command": "filescope.deleteScopeFromTree",
+          "when": "view == fileScopeExplorer && viewItem == scope",
+          "group": "inline"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "filescope.addToScope",
+          "group": "FileScope@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "filescope.addToScope",
+          "group": "FileScope@1"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "vsix": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.94.0",
+    "@types/mocha": "^10.0.8",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^9.11.1",
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.6.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
